@@ -149,6 +149,10 @@ export module Scale {
       //scale it to the middle
       return super.scale(value) + this.rangeBand() / 2;
     }
+
+    public ticks(): any[] {
+      return this.domain();
+    }
   }
 }
 }

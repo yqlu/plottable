@@ -1307,6 +1307,7 @@ declare module Plottable {
             outerPadding(outerPadding: number): Category;
             copy(): Category;
             scale(value: string): number;
+            ticks(): any[];
         }
     }
 }

@@ -2395,6 +2395,9 @@ var Plottable;
                 //scale it to the middle
                 return _super.prototype.scale.call(this, value) + this.rangeBand() / 2;
             };
+            Category.prototype.ticks = function () {
+                return this.domain();
+            };
             return Category;
         })(Scale.AbstractScale);
         Scale.Category = Category;
@@ -6005,11 +6008,14 @@ var Plottable;
              */
             function Gridlines(xScale, yScale) {
                 var _this = this;
-                if (xScale != null && !(Plottable.Scale.AbstractQuantitative.prototype.isPrototypeOf(xScale))) {
-                    throw new Error("xScale needs to inherit from Scale.AbstractQuantitative");
+                var isIllegalScale = function (scale) {
+                    return scale != null && !(Plottable.Scale.AbstractQuantitative.prototype.isPrototypeOf(scale) || Plottable.Scale.Category.prototype.isPrototypeOf(scale));
+                };
+                if (isIllegalScale(xScale)) {
+                    throw new Error("xScale needs to inherit from Scale.AbstractQuantitative or Scale.Category");
                 }
-                if (yScale != null && !(Plottable.Scale.AbstractQuantitative.prototype.isPrototypeOf(yScale))) {
-                    throw new Error("yScale needs to inherit from Scale.AbstractQuantitative");
+                if (isIllegalScale(yScale)) {
+                    throw new Error("yScale needs to inherit from Scale.AbstractQuantitative or Scale.Category");
                 }
                 _super.call(this);
                 this.classed("gridlines", true);

@@ -16,11 +16,18 @@ export module Component {
      * @param {QuantitativeScale} yScale The scale to base the y gridlines on. Pass null if no gridlines are desired.
      */
     constructor(xScale: Scale.AbstractQuantitative<any>, yScale: Scale.AbstractQuantitative<any>) {
-      if (xScale != null && !(Scale.AbstractQuantitative.prototype.isPrototypeOf(xScale))) {
-        throw new Error("xScale needs to inherit from Scale.AbstractQuantitative");
+      var isIllegalScale = (scale: any) => {
+        return scale != null && !(
+            Scale.AbstractQuantitative.prototype.isPrototypeOf(scale) ||
+            Scale.Category.prototype.isPrototypeOf(scale)
+          );
       }
-      if (yScale != null && !(Scale.AbstractQuantitative.prototype.isPrototypeOf(yScale))) {
-        throw new Error("yScale needs to inherit from Scale.AbstractQuantitative");
+
+      if (isIllegalScale(xScale)) {
+        throw new Error("xScale needs to inherit from Scale.AbstractQuantitative or Scale.Category");
+      }
+      if (isIllegalScale(yScale)) {
+        throw new Error("yScale needs to inherit from Scale.AbstractQuantitative or Scale.Category");
       }
       super();
       this.classed("gridlines", true);
