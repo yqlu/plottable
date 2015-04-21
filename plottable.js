@@ -2161,10 +2161,10 @@ var Plottable;
                 }
             }
             /**
-             * Returns an adjusted log10 value for graphing purposes.  The first
+             * Returns an adjusted log value for graphing purposes.  The first
              * adjustment is that negative values are changed to positive during
              * the calculations, and then the answer is negated at the end.  The
-             * second is that, for values less than 10, an increasingly large
+             * second is that, for values less than base, an increasingly large
              * (0 to 1) scaling factor is added such that at 0 the value is
              * adjusted to 1, resulting in a returned result of 0.
              */
@@ -2217,7 +2217,11 @@ var Plottable;
                 var positiveUpper = max;
                 var negativeLogTicks = this.logTicks(-negativeUpper, -negativeLower).map(function (x) { return -x; }).reverse();
                 var positiveLogTicks = this.logTicks(positiveLower, positiveUpper);
-                var linearTicks = this._showIntermediateTicks ? d3.scale.linear().domain([negativeUpper, positiveLower]).ticks(this.howManyTicks(negativeUpper, positiveLower)) : [-this.pivot, 0, this.pivot].filter(function (x) { return min <= x && x <= max; });
+                var linearTicks = d3.scale.linear().domain([negativeUpper, positiveLower]).ticks(this.howManyTicks(negativeUpper, positiveLower));
+                // var linearTicks = this._showIntermediateTicks ?
+                //                           d3.scale.linear().domain([negativeUpper, positiveLower])
+                //                                   .ticks(this.howManyTicks(negativeUpper, positiveLower)) :
+                //                           [-this.pivot, 0, this.pivot].filter((x) => min <= x && x <= max);
                 var ticks = negativeLogTicks.concat(linearTicks).concat(positiveLogTicks);
                 // If you only have 1 tick, you can't tell how big the scale is.
                 if (ticks.length <= 1) {
