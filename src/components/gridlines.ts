@@ -21,7 +21,7 @@ export module Component {
             Scale.AbstractQuantitative.prototype.isPrototypeOf(scale) ||
             Scale.Category.prototype.isPrototypeOf(scale)
           );
-      }
+      };
 
       if (isIllegalScale(xScale)) {
         throw new Error("xScale needs to inherit from Scale.AbstractQuantitative or Scale.Category");
