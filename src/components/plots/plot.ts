@@ -418,9 +418,11 @@ module Plottable {
       var dataToDraw = this._getDataToDraw();
       var drawers = this._getDrawersInOrder();
 
-      this.datasets().forEach((ds, i) => drawers[i].draw(dataToDraw.get(ds), drawSteps));
-
-      var times = this.datasets().map((ds, i) => drawers[i].totalDrawTime(dataToDraw.get(ds), drawSteps));
+      var times = this.datasets().map((ds, i) =>
+        drawers[i].draw(
+          dataToDraw.get(ds),
+          drawSteps
+        ));
       var maxTime = Utils.Math.max(times, 0);
       this._additionalPaint(maxTime);
     }
