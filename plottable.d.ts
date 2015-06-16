@@ -921,6 +921,26 @@ declare module Plottable {
          * relative to the original domain (having a zoom level of 1).
          */
         zoomLevel(zoomLevel: number): QuantitativeScale<D>;
+        /**
+         * Gets the minimum zoom level allowable for the scale.
+         */
+        minZoomLevel(): number;
+        /**
+         * Sets the minimum zoom level for the scale, adjusting the current zoom level if necessary.
+         *
+         * @returns {QuantitativeScale<D>} The calling QuantitativeScale.
+         */
+        minZoomLevel(minZoomLevel: number): QuantitativeScale<D>;
+        /**
+         * Gets the maximum zoom level allowable for the scale.
+         */
+        maxZoomLevel(): number;
+        /**
+         * Sets the maximum zoom level for the scale, adjusting the current zoom level if necessary.
+         *
+         * @returns {QuantitativeScale<D>} The calling QuantitativeScale.
+         */
+        maxZoomLevel(maxZoomLevel: number): QuantitativeScale<D>;
     }
 }
 

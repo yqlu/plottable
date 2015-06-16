@@ -1476,6 +1476,8 @@ var Plottable;
             this._tickGenerator = function (scale) { return scale.defaultTicks(); };
             this._padProportion = 0.05;
             this._zoomLevel = 1.0;
+            this._minZoomLevel = 0;
+            this._maxZoomLevel = Infinity;
             this._paddingExceptionsProviders = new Plottable.Utils.Set();
         }
         QuantitativeScale.prototype.autoDomain = function () {
@@ -1681,6 +1683,14 @@ var Plottable;
             if (zoomLevel == null) {
                 return this._zoomLevel;
             }
+            if (zoomLevel < this.minZoomLevel()) {
+                Plottable.Utils.Window.warn("Input zoom level is less than allowable minimum.  Using minimum.");
+                zoomLevel = this.minZoomLevel();
+            }
+            else if (zoomLevel > this.maxZoomLevel()) {
+                Plottable.Utils.Window.warn("Input zoom level is greater than allowable maximum.  Using maximum.");
+                zoomLevel = this.maxZoomLevel();
+            }
             var oldZoomLevel = this._zoomLevel;
             var magnifyTransform = function (rangeValue) {
                 var centerValue = (_this.range()[0] + _this.range()[1]) / 2;
@@ -1688,6 +1698,28 @@ var Plottable;
             };
             this._zoomLevel = zoomLevel;
             this._setDomain(this.range().map(magnifyTransform));
+            return this;
+        };
+        QuantitativeScale.prototype.minZoomLevel = function (minZoomLevel) {
+            if (minZoomLevel == null) {
+                return this._minZoomLevel;
+            }
+            if (minZoomLevel > this.maxZoomLevel()) {
+                Plottable.Utils.Window.warn("Minimum zoom level is greater than maximum zoom level.  Results may be unexpected");
+            }
+            this._minZoomLevel = minZoomLevel;
+            this.zoomLevel(this.zoomLevel());
+            return this;
+        };
+        QuantitativeScale.prototype.maxZoomLevel = function (maxZoomLevel) {
+            if (maxZoomLevel == null) {
+                return this._maxZoomLevel;
+            }
+            if (maxZoomLevel < this.minZoomLevel()) {
+                Plottable.Utils.Window.warn("Minimum zoom level is less than minimum zoom level.  Results may be unexpected");
+            }
+            this._maxZoomLevel = maxZoomLevel;
+            this.zoomLevel(this.zoomLevel());
             return this;
         };
         QuantitativeScale._DEFAULT_NUM_TICKS = 10;

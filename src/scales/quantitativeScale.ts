@@ -9,6 +9,8 @@ export class QuantitativeScale<D> extends Scale<D, number> {
   private _domainMin: D;
   private _domainMax: D;
   private _zoomLevel = 1.0;
+  private _minZoomLevel = 0;
+  private _maxZoomLevel = Infinity;
 
   /**
    * A QuantitativeScale is a Scale that maps number-like values to numbers.
@@ -308,6 +310,13 @@ export class QuantitativeScale<D> extends Scale<D, number> {
     if (zoomLevel == null) {
       return this._zoomLevel;
     }
+    if (zoomLevel < this.minZoomLevel()) {
+      Utils.Window.warn("Input zoom level is less than allowable minimum.  Using minimum.");
+      zoomLevel = this.minZoomLevel();
+    } else if (zoomLevel > this.maxZoomLevel()) {
+      Utils.Window.warn("Input zoom level is greater than allowable maximum.  Using maximum.");
+      zoomLevel = this.maxZoomLevel();
+    }
     var oldZoomLevel = this._zoomLevel;
     var magnifyTransform = (rangeValue: number) => {
       var centerValue = (this.range()[0] + this.range()[1]) / 2;
@@ -315,6 +324,50 @@ export class QuantitativeScale<D> extends Scale<D, number> {
     };
     this._zoomLevel = zoomLevel;
     this._setDomain(this.range().map(magnifyTransform));
+    return this;
+  }
+
+  /**
+   * Gets the minimum zoom level allowable for the scale.
+   */
+  public minZoomLevel(): number;
+  /**
+   * Sets the minimum zoom level for the scale, adjusting the current zoom level if necessary.
+   * 
+   * @returns {QuantitativeScale<D>} The calling QuantitativeScale.
+   */
+  public minZoomLevel(minZoomLevel: number): QuantitativeScale<D>;
+  public minZoomLevel(minZoomLevel?: number): any {
+    if (minZoomLevel == null) {
+      return this._minZoomLevel;
+    }
+    if (minZoomLevel > this.maxZoomLevel()) {
+      Utils.Window.warn("Minimum zoom level is greater than maximum zoom level.  Results may be unexpected");
+    }
+    this._minZoomLevel = minZoomLevel;
+    this.zoomLevel(this.zoomLevel());
+    return this;
+  }
+
+  /**
+   * Gets the maximum zoom level allowable for the scale.
+   */
+  public maxZoomLevel(): number;
+  /**
+   * Sets the maximum zoom level for the scale, adjusting the current zoom level if necessary.
+   * 
+   * @returns {QuantitativeScale<D>} The calling QuantitativeScale.
+   */
+  public maxZoomLevel(maxZoomLevel: number): QuantitativeScale<D>;
+  public maxZoomLevel(maxZoomLevel?: number): any {
+    if (maxZoomLevel == null) {
+      return this._maxZoomLevel;
+    }
+    if (maxZoomLevel < this.minZoomLevel()) {
+      Utils.Window.warn("Minimum zoom level is less than minimum zoom level.  Results may be unexpected");
+    }
+    this._maxZoomLevel = maxZoomLevel;
+    this.zoomLevel(this.zoomLevel());
     return this;
   }
 }
