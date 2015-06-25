@@ -75,6 +75,18 @@ function run(svg, data, Plottable) {
 
   var group = new Plottable.Components.Group(plot_array);
 
+  var add_click = function(plot){
+    new Plottable.Interactions.Click().onClick(function(){
+      var d = plot.datasets()[0].data();
+      plot.datasets()[0].data(d);
+    }).attachTo(plot);
+ }
+
+  for( var i = 0; i < plot_array.length; i++){
+    var plot = plot_array[i];
+    add_click(plot);
+  }
+
   var lineChart = new Plottable.Components.Table([[yAxis, group],
                                                  [null,  xAxis]]);
   lineChart.renderTo(svg);
