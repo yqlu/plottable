@@ -20,6 +20,8 @@ function run(svg, data, Plottable) {
     .x(function (d) { return d3.time.format("%x").parse(d.x); }, xScale)
     .y(function(d) { return d.y; }, yScale);
 
+  hBarPlot.deferredRendering(true);
+
   var xAxis = new Plottable.Axes.Time(xScale, "bottom");
   xAxis.formatter(Plottable.Formatters.multiTime());
   var yAxis = new Plottable.Axes.Category(yScale, "left");

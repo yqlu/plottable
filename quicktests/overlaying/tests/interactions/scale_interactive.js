@@ -37,6 +37,7 @@ function run(svg, data, Plottable) {
 
   var scatterPlot = new Plottable.Plots.Scatter().addDataset(dataseries);
   scatterPlot.x(function(d) { return d.x; }, xScale).y(function(d) { return d.y; }, yScale);
+  scatterPlot.deferredRendering(true);
   var gridlines = new Plottable.Components.Gridlines(xScale, yScale);
   var renderGroup = new Plottable.Components.Group([scatterPlot, gridlines]);
 

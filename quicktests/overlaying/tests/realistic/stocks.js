@@ -87,6 +87,9 @@ function run(svg, data, Plottable) {
             line_goog.autorangeMode("y");
           }
 
+          line_goog.deferredRendering(true);
+          line_aapl.deferredRendering(true);
+
           // should be one line plot, pending #917
 
           var legend = new Plottable.Components.Legend(colorScale);

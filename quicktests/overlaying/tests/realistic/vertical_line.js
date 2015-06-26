@@ -24,6 +24,9 @@ function run(svg, data, Plottable) {
     plot.autorangeMode("x");
   }
 
+  plot.deferredRendering(true);
+
+
   var table = new Plottable.Components.Table([[yAxis, plot],
                                              [null, xAxis]]);
   table.renderTo(svg);
