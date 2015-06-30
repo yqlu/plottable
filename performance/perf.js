@@ -1,28 +1,8 @@
-// PLOTTABLE PERF TESTING FIDDLE
 
-// WARNING: START WITH SMALL NUMBERS
-// remember that the number of data points you're rendering is
-// pts_array X ds_array * samples
-// and the numbers add up quickly
-
-// What Plot do you want to test the perf of? Type it exactly as it appears when you call Plottable.Plots._____();
-var plotTypes = ["Scatter", "Area", "Line", "Bar", "StackedArea", "StackedBar", "ClusteredBar"]; 
-
-// If you want to run the tests as if they're on a category axis (bar, stacked and clustered plots), set category to true. 
-// Setting category to true makes the x-values the same across all datasets, and uses a Scales.Category for the xScale
-var category = true;
-
-// pts_array is an array of the number of points you'd like to compare to each other. 
-// For example, if you only want to see an estimate of rendering time for 50,000 pts, pts_array = [50000]
-// But if you want to compare render times of 100, 1000, and 10000 points, pts_array = [100, 1000, 10000]
-var pts_array = [100];
-
-// ds_array will take each value in pts_array above, and split that number of points into datasets
-// If you aren't worried about dataset perf, use ds_array = [1]
-// If you want to see how having 10 datasets compares to having 100 datasets, use ds_array = [10, 100]
-var ds_array = [1, 10]; 
-
-// How many times do you want each test to be run? Start with small numbers :) 
+var plotTypes = []; 
+var category = false;
+var pts_array = [10];
+var ds_array = [1]; 
 var samples = 10;
 
 
@@ -55,9 +35,8 @@ var render = function(plot, points, datasets){
   var end = Date.now();  
   plot.destroy();
     
-  return end - start;
-    
-}
+  return end - start;    
+};
 
 var get_average = function(plotType, points, datasets){
   var total = 0;
@@ -67,7 +46,7 @@ var get_average = function(plotType, points, datasets){
     d3.select("#chart").text("");
   }  
   return total/samples;
-}    
+};    
 
 
 var render_results = function(result_data, plotType){
@@ -123,10 +102,8 @@ var render_results = function(result_data, plotType){
 	    .attr("height", "100%")
 	    .attr("fill", "#ffffff");
 
-    table.renderTo(svg);    
-
-    
-}   
+    table.renderTo(svg);       
+};  
 
 
 var collect_data = function(plotType){
@@ -139,11 +116,36 @@ var collect_data = function(plotType){
     }    
   }      
   return result_data;  
-}    
+};
+
+var update_plotTypes = function(){
+  plotTypes = [];
+  var boxes = $(":checkbox:checked");
+  for(var i = 0; i < boxes.length; i++){
+    plotTypes.push(boxes[i].value)
+  }
+};  
+
+update_samples = function(){
+  samples = $("#samples")[0].value;
+}  
 
 
 run = function() {
-  for (var i = 0; i < plotTypes.length; i++){
-    render_results(collect_data(plotTypes[i]), plotTypes[i]); 
-  }
-}
+  $('.result_plot').remove();
+  update_plotTypes();
+  update_samples();
+
+  var len = plotTypes.length;
+  var i = 0;
+  var runTests = setInterval(function() {
+      if (i < len) {
+        render_results(collect_data(plotTypes[i]), plotTypes[i]);
+        $("#progress").text("Progress: " + (i + 1).toString() + "/" + len.toString());
+      } else {
+        clearInterval(runTests);
+      }
+      i++     
+  }, 1);
+
+};

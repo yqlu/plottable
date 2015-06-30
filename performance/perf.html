@@ -16,21 +16,30 @@
   </head>
 
   <body>
+    <div id="header">
+      <h1> Plottable Perf Testing </h1>
+    </div>
+
     <div id="options">
       <form action="">
-        <input type="checkbox" name="plot" value="Scatter">Scatter<br>
-        <input type="checkbox" name="plot" value="Area">Area<br>
-        <input type="checkbox" name="plot" value="Line">Line<br> 
-        <input type="checkbox" name="plot" value="Bar">Bar<br> 
-        <input type="checkbox" name="plot" value="Segment">Segment<br> 
-        <input type="checkbox" name="plot" value="StackedArea">Stacked Area<br> 
-        <input type="checkbox" name="plot" value="StackedBar">Stacked Bar<br> 
-        <input type="checkbox" name="plot" value="ClusteredBar">Clustered Bar<br>
+        <input type="checkbox" name="plot" value="Scatter" checked>Scatter<br>
+        <input type="checkbox" name="plot" value="Area" checked>Area<br>
+        <input type="checkbox" name="plot" value="Line" checked>Line<br> 
+        <input type="checkbox" name="plot" value="Bar" checked>Bar<br> 
+        <input type="checkbox" name="plot" value="StackedArea" checked>Stacked Area<br> 
+        <input type="checkbox" name="plot" value="StackedBar" checked>Stacked Bar<br> 
+        <input type="checkbox" name="plot" value="ClusteredBar" checked>Clustered Bar<br><br>
+        Number of Samples:
+        <input id="samples" type="number" name="quantity" min="1" max="20" value="10">
       </form>
+      <br>
       <button id="btn_run" onclick="run()">Run Perf Tests</button>
-    </div>  
+      <p id="progress"> Progress: </p>
+    </div> 
+
     <div id="results">
       <svg id="chart" width="600" height="400"></svg>  
     <div>
+
   </body>
 </html>
