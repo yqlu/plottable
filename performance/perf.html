@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="/bower_components/jQuery/dist/jquery.js" charset="utf-8"></script>
+    <script src="/bower_components/d3/d3.js" charset="utf-8"></script>
+    <script src="/quicktests/exampleUtil.js"></script>
+    <script src="/bower_components/svg-typewriter/svgtypewriter.js" charset="utf-8"></script>
+
+    <link rel="stylesheet" type="text/css" href="/plottable.css">
+    <link rel="stylesheet" type="text/css" href="/performance/perf.css">
+
+    <script src="/performance/perf.js" defer> </script>
+    <script src="/plottable.js"> </script> 
+
+    <title>Plottable Perf Testing</title>
+  </head>
+
+  <body>
+    <div id="options">
+      <form action="">
+        <input type="checkbox" name="plot" value="Scatter">Scatter<br>
+        <input type="checkbox" name="plot" value="Area">Area<br>
+        <input type="checkbox" name="plot" value="Line">Line<br> 
+        <input type="checkbox" name="plot" value="Bar">Bar<br> 
+        <input type="checkbox" name="plot" value="Segment">Segment<br> 
+        <input type="checkbox" name="plot" value="StackedArea">Stacked Area<br> 
+        <input type="checkbox" name="plot" value="StackedBar">Stacked Bar<br> 
+        <input type="checkbox" name="plot" value="ClusteredBar">Clustered Bar<br>
+      </form>
+      <button id="btn_run" onclick="run()">Run Perf Tests</button>
+    </div>  
+    <div id="results">
+      <svg id="chart" width="600" height="400"></svg>  
+    <div>
+  </body>
+</html>
