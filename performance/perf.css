@@ -6,18 +6,37 @@ body{
 	min-height: 100%
 }
 
+h1, p {
+	color: #460266;
+}
+
+#header{
+	text-align: center;
+	padding: 10px;
+	background-color: #8ed2c9
+}
+
 #options {
-	display: inline-block;
 	width: 100%;
-	background-color: #ffb6c1;
+	background-color: #ff7a5a;
+	padding: 10px;
+
 }
 
 #results {
-	display: inline-block;
 	margin: 0;
-	background-color: #eeeeee;
+	background-color: #00aaa0;
 	width: 100%;
 	height: 100%;
+	padding: 100px;
+}
+
+#summary {
+	margin: 0;
+	background-color: #ffb85f;
+	width: 100%;
+	min-height: 100%;
+	padding: 100px;
 }
 
 svg.plottable {

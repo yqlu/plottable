@@ -1,11 +1,11 @@
 
-var plotTypes = []; 
+var plotTypes; 
 var category = false;
-var pts_array = [10];
-var ds_array = [1]; 
-var samples = 10;
+var pts_array = [100, 200, 300, 400];
+var ds_array = [1, 2, 5]; 
+var samples;
 
-
+var db_staging = [];
 
 
 var render = function(plot, points, datasets){
@@ -45,6 +45,14 @@ var get_average = function(plotType, points, datasets){
     total += render(newPlot, points, datasets);
     d3.select("#chart").text("");
   }  
+
+  var obj = {};
+  obj.plotType = plotType;
+  obj.pts = points;
+  obj.ds = datasets;
+  obj.runtime = total/samples;
+  db_staging.push(obj);
+
   return total/samples;
 };    
 
@@ -126,12 +134,83 @@ var update_plotTypes = function(){
   }
 };  
 
-update_samples = function(){
+var update_samples = function(){
   samples = $("#samples")[0].value;
 }  
 
+var generate_summary_svgs = function(){
+  for(var i = 0; i < ds_array.length; i++){
+    function ds_group(value) {
+      return value.ds === ds_array[i];
+    }
 
-run = function() {
+    var filtered_array = jQuery.grep(db_staging, ds_group);
+    console.log("filtered by ds");
+    console.log(filtered_array);
+    var xScale = new Plottable.Scales.Linear();
+    var yScale = new Plottable.Scales.Linear();
+     
+    var xAxis = new Plottable.Axes.Numeric(xScale, "bottom");
+    var xAxisLabel = new Plottable.Components.AxisLabel("total number of points rendered", 0);
+    var yAxis = new Plottable.Axes.Numeric(yScale, "left");
+    var yAxisLabel = new Plottable.Components.AxisLabel("time to render (ms)", 270);
+      
+    var colorScale = new Plottable.Scales.Color();
+
+    var legend = new Plottable.Components.Legend(colorScale);
+    var legend_title = new Plottable.Components.AxisLabel("Plot Types", 0);
+    var legend_table = new Plottable.Components.Table([[legend_title], [legend]]);  
+    
+    var titleString = "Time to render points, when split across " + ds_array[i] + " datasets";
+    var title_label = new Plottable.Components.TitleLabel(titleString, 0);  
+      
+    var dataset = new Plottable.Dataset(filtered_array);
+    var plot_array = [];
+    for( var k = 0; k < plotTypes.length; k++){ 
+      function plot_group(value){
+        return value.plotType === plotTypes[k];
+      }
+      var line_data = jQuery.grep(filtered_array, plot_group);
+      console.log("filtered by plot type");
+      console.log(line_data);
+      var linePlot = new Plottable.Plots.Line()
+        .addDataset(new Plottable.Dataset(line_data))
+        .x(function(d){
+          return d.pts * d.ds;
+        }, xScale)
+        .y(function(d){
+          return d.runtime;
+        }, yScale)
+        .attr("stroke", 
+        function(d){
+          return d.plotType;
+        }, colorScale);
+        plot_array.push(linePlot);
+    }
+
+    var group = new Plottable.Components.Group(plot_array);
+    var table = new Plottable.Components.Table([[null, null, title_label, null],
+                                              [yAxisLabel, yAxis, group, legend_table],
+                                              [null, null, xAxis, null],
+                                              [null, null, xAxisLabel, null]]);
+    var svg = d3.select("#summary")
+        .append("svg")
+        .attr("class", "result_plot")
+        .attr("width", "50%")
+        .attr("height", "600");
+    svg.append("rect")
+      .attr("width", "100%")
+      .attr("height", "100%")
+      .attr("fill", "#ffffff");
+
+    table.renderTo(svg);  
+
+  }
+
+}
+
+
+var run = function() {
   $('.result_plot').remove();
   update_plotTypes();
   update_samples();
@@ -144,8 +223,11 @@ run = function() {
         $("#progress").text("Progress: " + (i + 1).toString() + "/" + len.toString());
       } else {
         clearInterval(runTests);
+        generate_summary_svgs();
       }
       i++     
   }, 1);
+
+
 
 };
