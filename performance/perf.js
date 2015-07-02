@@ -1,7 +1,7 @@
 
 var plotTypes; 
 var category = false;
-var pts_array = [500, 5000, 10000, 20000, 30000, 50000];
+var pts_array = [500, 5000, 10000, 20000, 30000];
 var ds_array = [1, 10]; 
 var samples;
 var db_staging;
@@ -100,10 +100,10 @@ var render_results = function(result_data, plotType){
                                               [null, null, xAxis, null],
                                               [null, null, xAxisLabel, null]]);
     var svg = d3.select("#results")
-        .append("svg")
-        .attr("class", "result_plot")
-        .attr("width", "50%")
-        .attr("height", "600");
+      .append("svg")
+      .attr("class", "result_plot")
+      .attr("width", "50%")
+      .attr("height", "600");
     svg.append("rect")
 	    .attr("width", "100%")
 	    .attr("height", "100%")
@@ -125,21 +125,6 @@ var collect_data = function(plotType){
   return result_data;  
 };
 
-var update_plotTypes = function(){
-  plotTypes = [];
-  var boxes = $(":checkbox:checked");
-  for(var i = 0; i < boxes.length; i++){
-    plotTypes.push(boxes[i].value)
-  }
-};  
-
-var update_samples = function(){
-  samples = $("#samples")[0].value;
-}  
-
-var update_db_staging = function(){
-  db_staging = [];
-}
 
 var generate_summary_svgs = function(){
   for(var i = 0; i < ds_array.length; i++){
@@ -194,19 +179,33 @@ var generate_summary_svgs = function(){
                                               [null, null, xAxis, null],
                                               [null, null, xAxisLabel, null]]);
     var svg = d3.select("#summary")
-        .append("svg")
-        .attr("class", "result_plot")
-        .attr("width", "50%")
-        .attr("height", "600");
+      .append("svg")
+      .attr("class", "result_plot")
+      .attr("width", "50%")
+      .attr("height", "600");
     svg.append("rect")
       .attr("width", "100%")
       .attr("height", "100%")
       .attr("fill", "#ffffff");
 
     table.renderTo(svg);  
-
   }
+}
 
+var update_plotTypes = function(){
+  plotTypes = [];
+  var boxes = $(":checkbox:checked");
+  for(var i = 0; i < boxes.length; i++){
+    plotTypes.push(boxes[i].value)
+  }
+};  
+
+var update_samples = function(){
+  samples = $("#samples")[0].value;
+}  
+
+var update_db_staging = function(){
+  db_staging = [];
 }
 
 
@@ -230,11 +229,8 @@ var run = function() {
         clearInterval(runTests);
         generate_summary_svgs();
         var t_f = Date.now();
-        $("#progress").text("Runtime: " + (t_f - t_0) + " ms");
+        $("#progress").text("Runtime: " + (t_f - t_0) * .0000166667  + " Minutes");
       }
       i++     
   }, 1);
-
-
-
 };

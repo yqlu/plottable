@@ -12,6 +12,7 @@ h1, p {
 
 #header{
 	text-align: center;
+	width: 100%;
 	padding: 10px;
 	background-color: #8ed2c9
 }
