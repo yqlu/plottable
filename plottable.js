@@ -6756,6 +6756,8 @@ var Plottable;
             if (this._autoAdjustYScaleDomain) {
                 this._updateYExtentsAndAutodomain();
             }
+            this._updateExtents();
+            this.redraw();
             this.render();
             return this;
         };
@@ -6767,6 +6769,8 @@ var Plottable;
             if (this._autoAdjustXScaleDomain) {
                 this._updateXExtentsAndAutodomain();
             }
+            this._updateExtents();
+            this.redraw();
             this.render();
             return this;
         };
