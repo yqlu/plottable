@@ -1,8 +1,8 @@
 
 var plotTypes; 
 var category = false;
-var pts_array = [100, 200, 300, 400];
-var ds_array = [1, 2, 5]; 
+var pts_array = [100, 150, 200, 250, 300, 350, 400, 450, 500];
+var ds_array = [1]; 
 var samples;
 
 var db_staging = [];
@@ -145,8 +145,6 @@ var generate_summary_svgs = function(){
     }
 
     var filtered_array = jQuery.grep(db_staging, ds_group);
-    console.log("filtered by ds");
-    console.log(filtered_array);
     var xScale = new Plottable.Scales.Linear();
     var yScale = new Plottable.Scales.Linear();
      
@@ -171,8 +169,7 @@ var generate_summary_svgs = function(){
         return value.plotType === plotTypes[k];
       }
       var line_data = jQuery.grep(filtered_array, plot_group);
-      console.log("filtered by plot type");
-      console.log(line_data);
+
       var linePlot = new Plottable.Plots.Line()
         .addDataset(new Plottable.Dataset(line_data))
         .x(function(d){
@@ -214,6 +211,7 @@ var run = function() {
   $('.result_plot').remove();
   update_plotTypes();
   update_samples();
+  db_staging = [];
 
   var len = plotTypes.length;
   var i = 0;
