@@ -1,11 +1,10 @@
 
 var plotTypes; 
 var category = false;
-var pts_array = [100, 150, 200, 250, 300, 350, 400, 450, 500];
-var ds_array = [1]; 
+var pts_array = [500, 5000, 10000, 20000, 30000, 50000];
+var ds_array = [1, 10]; 
 var samples;
-
-var db_staging = [];
+var db_staging;
 
 
 var render = function(plot, points, datasets){
@@ -138,6 +137,10 @@ var update_samples = function(){
   samples = $("#samples")[0].value;
 }  
 
+var update_db_staging = function(){
+  db_staging = [];
+}
+
 var generate_summary_svgs = function(){
   for(var i = 0; i < ds_array.length; i++){
     function ds_group(value) {
@@ -208,6 +211,7 @@ var generate_summary_svgs = function(){
 
 
 var run = function() {
+  var t_0 = Date.now();
   $('.result_plot').remove();
   update_plotTypes();
   update_samples();
@@ -218,10 +222,15 @@ var run = function() {
   var runTests = setInterval(function() {
       if (i < len) {
         render_results(collect_data(plotTypes[i]), plotTypes[i]);
-        $("#progress").text("Progress: " + (i + 1).toString() + "/" + len.toString());
+        var t_1 = Date.now();
+        $("#progress").text("Progress: " + (i + 1).toString() 
+                            + "/" + len.toString() + ", "
+                            + (t_1 - t_0) + " ms");
       } else {
         clearInterval(runTests);
         generate_summary_svgs();
+        var t_f = Date.now();
+        $("#progress").text("Runtime: " + (t_f - t_0) + " ms");
       }
       i++     
   }, 1);
