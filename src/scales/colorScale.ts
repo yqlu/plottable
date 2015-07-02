@@ -61,7 +61,12 @@ export module Scales {
       return Utils.Array.uniq(this._getAllIncludedValues());
     }
 
+    private static _cachedColors: string[];
     private static _getPlottableColors(): string[] {
+      if (this._cachedColors != null) {
+        return this._cachedColors;
+      }
+      return ["#111111"];
       var plottableDefaultColors: string[] = [];
       var colorTester = d3.select("body").append("plottable-color-tester");
 
@@ -77,6 +82,7 @@ export module Scales {
         i++;
       }
       colorTester.remove();
+      this._cachedColors = plottableDefaultColors;
       return plottableDefaultColors;
     }
 

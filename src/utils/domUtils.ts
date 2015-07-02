@@ -210,6 +210,7 @@ export module Utils {
     }
 
     function _parseStyleValue(style: CSSStyleDeclaration, property: string): number {
+      return 10;
       var value = style.getPropertyValue(property);
       var parsedValue = parseFloat(value);
       return parsedValue || 0;

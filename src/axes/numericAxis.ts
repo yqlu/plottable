@@ -30,7 +30,8 @@ export module Axes {
 
     protected _computeWidth() {
       var tickValues = this._getTickValues();
-      var textLengths = tickValues.map((v: any) => {
+      var textLengths = tickValues.filter((d, i) => false)
+      .map((v: any) => {
         var formattedValue = this.formatter()(v);
         return this._measurer.measure(formattedValue).width;
       });
@@ -47,6 +48,9 @@ export module Axes {
     }
 
     protected _computeHeight() {
+
+      return 10;
+
       var textHeight = this._measurer.measure().height;
 
       if (this._tickLabelPositioning === "center") {
@@ -75,13 +79,13 @@ export module Axes {
         return;
       }
 
-      if (!this._isHorizontal()) {
-        var reComputedWidth = this._computeWidth();
-        if (reComputedWidth > this.width() || reComputedWidth < (this.width() - this.margin())) {
-          this.redraw();
-          return;
-        }
-      }
+      // if (!this._isHorizontal()) {
+      //   var reComputedWidth = this._computeWidth();
+      //   if (reComputedWidth > this.width() || reComputedWidth < (this.width() - this.margin())) {
+      //     this.redraw();
+      //     return;
+      //   }
+      // }
 
       this.render();
     }
@@ -187,15 +191,15 @@ export module Axes {
         this._hideEndTickLabels();
       }
 
-      this._hideOverflowingTickLabels();
-      this._hideOverlappingTickLabels();
+      // this._hideOverflowingTickLabels();
+      // this._hideOverlappingTickLabels();
 
-      if (this._tickLabelPositioning === "bottom" ||
-          this._tickLabelPositioning === "top" ||
-          this._tickLabelPositioning === "left" ||
-          this._tickLabelPositioning === "right") {
-        this._hideTickMarksWithoutLabel();
-      }
+      // if (this._tickLabelPositioning === "bottom" ||
+      //     this._tickLabelPositioning === "top" ||
+      //     this._tickLabelPositioning === "left" ||
+      //     this._tickLabelPositioning === "right") {
+      //   this._hideTickMarksWithoutLabel();
+      // }
       return this;
     }
 
@@ -263,19 +267,19 @@ export module Axes {
     }
 
     private _hideEndTickLabels() {
-      var boundingBox = (<Element> this._boundingBox.node()).getBoundingClientRect();
+      // var boundingBox = (<Element> this._boundingBox.node()).getBoundingClientRect();
       var tickLabels = this._tickLabelContainer.selectAll("." + Axis.TICK_LABEL_CLASS);
       if (tickLabels[0].length === 0) {
         return;
       }
       var firstTickLabel = <Element> tickLabels[0][0];
-      if (!Utils.DOM.clientRectInside(firstTickLabel.getBoundingClientRect(), boundingBox)) {
-        d3.select(firstTickLabel).style("visibility", "hidden");
-      }
+      d3.select(firstTickLabel).style("visibility", "hidden");
+      // if (!Utils.DOM.clientRectInside(firstTickLabel.getBoundingClientRect(), boundingBox)) {
+      // }
       var lastTickLabel = <Element> tickLabels[0][tickLabels[0].length - 1];
-      if (!Utils.DOM.clientRectInside(lastTickLabel.getBoundingClientRect(), boundingBox)) {
-        d3.select(lastTickLabel).style("visibility", "hidden");
-      }
+      d3.select(lastTickLabel).style("visibility", "hidden");
+      // if (!Utils.DOM.clientRectInside(lastTickLabel.getBoundingClientRect(), boundingBox)) {
+      // }
     }
 
     // Responsible for hiding any tick labels that break out of the bounding container

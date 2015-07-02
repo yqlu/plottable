@@ -449,6 +449,7 @@ var Plottable;
                 throw new Error("input '" + input + "' can't be parsed as an Range");
             }
             function _parseStyleValue(style, property) {
+                return 10;
                 var value = style.getPropertyValue(property);
                 var parsedValue = parseFloat(value);
                 return parsedValue || 0;
@@ -2164,6 +2165,10 @@ var Plottable;
                 return Plottable.Utils.Array.uniq(this._getAllIncludedValues());
             };
             Color._getPlottableColors = function () {
+                if (this._cachedColors != null) {
+                    return this._cachedColors;
+                }
+                return ["#111111"];
                 var plottableDefaultColors = [];
                 var colorTester = d3.select("body").append("plottable-color-tester");
                 var defaultColorHex = Plottable.Utils.Color.colorTest(colorTester, "");
@@ -2177,6 +2182,7 @@ var Plottable;
                     i++;
                 }
                 colorTester.remove();
+                this._cachedColors = plottableDefaultColors;
                 return plottableDefaultColors;
             };
             /**
@@ -3050,7 +3056,7 @@ var Plottable;
          * @returns {Component} The calling Component.
          */
         Component.prototype.renderTo = function (element) {
-            this.detach();
+            // this.detach();
             if (element != null) {
                 var selection;
                 if (typeof (element) === "string") {
@@ -4299,7 +4305,7 @@ var Plottable;
             Numeric.prototype._computeWidth = function () {
                 var _this = this;
                 var tickValues = this._getTickValues();
-                var textLengths = tickValues.map(function (v) {
+                var textLengths = tickValues.filter(function (d, i) { return false; }).map(function (v) {
                     var formattedValue = _this.formatter()(v);
                     return _this._measurer.measure(formattedValue).width;
                 });
@@ -4313,6 +4319,7 @@ var Plottable;
                 return this._computedWidth;
             };
             Numeric.prototype._computeHeight = function () {
+                return 10;
                 var textHeight = this._measurer.measure().height;
                 if (this._tickLabelPositioning === "center") {
                     this._computedHeight = this._maxLabelTickLength() + this.tickLabelPadding() + textHeight;
@@ -4338,13 +4345,13 @@ var Plottable;
                 if (!this._isSetup) {
                     return;
                 }
-                if (!this._isHorizontal()) {
-                    var reComputedWidth = this._computeWidth();
-                    if (reComputedWidth > this.width() || reComputedWidth < (this.width() - this.margin())) {
-                        this.redraw();
-                        return;
-                    }
-                }
+                // if (!this._isHorizontal()) {
+                //   var reComputedWidth = this._computeWidth();
+                //   if (reComputedWidth > this.width() || reComputedWidth < (this.width() - this.margin())) {
+                //     this.redraw();
+                //     return;
+                //   }
+                // }
                 this.render();
             };
             Numeric.prototype.renderImmediately = function () {
@@ -4431,11 +4438,14 @@ var Plottable;
                 if (!this.showEndTickLabels()) {
                     this._hideEndTickLabels();
                 }
-                this._hideOverflowingTickLabels();
-                this._hideOverlappingTickLabels();
-                if (this._tickLabelPositioning === "bottom" || this._tickLabelPositioning === "top" || this._tickLabelPositioning === "left" || this._tickLabelPositioning === "right") {
-                    this._hideTickMarksWithoutLabel();
-                }
+                // this._hideOverflowingTickLabels();
+                // this._hideOverlappingTickLabels();
+                // if (this._tickLabelPositioning === "bottom" ||
+                //     this._tickLabelPositioning === "top" ||
+                //     this._tickLabelPositioning === "left" ||
+                //     this._tickLabelPositioning === "right") {
+                //   this._hideTickMarksWithoutLabel();
+                // }
                 return this;
             };
             Numeric.prototype._showAllTickMarks = function () {
@@ -4482,19 +4492,19 @@ var Plottable;
                 }
             };
             Numeric.prototype._hideEndTickLabels = function () {
-                var boundingBox = this._boundingBox.node().getBoundingClientRect();
+                // var boundingBox = (<Element> this._boundingBox.node()).getBoundingClientRect();
                 var tickLabels = this._tickLabelContainer.selectAll("." + Plottable.Axis.TICK_LABEL_CLASS);
                 if (tickLabels[0].length === 0) {
                     return;
                 }
                 var firstTickLabel = tickLabels[0][0];
-                if (!Plottable.Utils.DOM.clientRectInside(firstTickLabel.getBoundingClientRect(), boundingBox)) {
-                    d3.select(firstTickLabel).style("visibility", "hidden");
-                }
+                d3.select(firstTickLabel).style("visibility", "hidden");
+                // if (!Utils.DOM.clientRectInside(firstTickLabel.getBoundingClientRect(), boundingBox)) {
+                // }
                 var lastTickLabel = tickLabels[0][tickLabels[0].length - 1];
-                if (!Plottable.Utils.DOM.clientRectInside(lastTickLabel.getBoundingClientRect(), boundingBox)) {
-                    d3.select(lastTickLabel).style("visibility", "hidden");
-                }
+                d3.select(lastTickLabel).style("visibility", "hidden");
+                // if (!Utils.DOM.clientRectInside(lastTickLabel.getBoundingClientRect(), boundingBox)) {
+                // }
             };
             // Responsible for hiding any tick labels that break out of the bounding container
             Numeric.prototype._hideOverflowingTickLabels = function () {

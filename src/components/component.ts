@@ -263,7 +263,7 @@ export class Component {
    * @returns {Component} The calling Component.
    */
   public renderTo(element: String | d3.Selection<void>): Component {
-    this.detach();
+    // this.detach();
     if (element != null) {
       var selection: d3.Selection<void>;
       if (typeof(element) === "string") {
