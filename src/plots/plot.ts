@@ -549,6 +549,10 @@ export class Plot extends Component {
   }
 
   protected _installScaleForKey(scale: Scale<any, any>, key: string) {
+    scale.onUpdate(() => {
+      this._updateExtents();
+      this.redraw();
+    });
     scale.onUpdate(this._renderCallback);
     scale.addIncludedValuesProvider(this._includedValuesProvider);
   }

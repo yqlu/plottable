@@ -6362,6 +6362,11 @@ var Plottable;
             scale.removeIncludedValuesProvider(this._includedValuesProvider);
         };
         Plot.prototype._installScaleForKey = function (scale, key) {
+            var _this = this;
+            scale.onUpdate(function () {
+                _this._updateExtents();
+                _this.redraw();
+            });
             scale.onUpdate(this._renderCallback);
             scale.addIncludedValuesProvider(this._includedValuesProvider);
         };
@@ -6756,8 +6761,8 @@ var Plottable;
             if (this._autoAdjustYScaleDomain) {
                 this._updateYExtentsAndAutodomain();
             }
-            this._updateExtents();
-            this.redraw();
+            // this._updateExtents();
+            // this.redraw();
             this.render();
             return this;
         };
@@ -6769,8 +6774,8 @@ var Plottable;
             if (this._autoAdjustXScaleDomain) {
                 this._updateXExtentsAndAutodomain();
             }
-            this._updateExtents();
-            this.redraw();
+            // this._updateExtents();
+            // this.redraw();
             this.render();
             return this;
         };

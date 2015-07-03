@@ -38,6 +38,35 @@ describe("Scales", () => {
     assert.isFalse(callbackWasCalled, "The registered callback was not called because the callback was removed");
   });
 
+  it("Scale can be swapped for plots", () => {
+    var svg = TestMethods.generateSVG();
+
+    var data = [
+      { x: 1, y: 1 },
+      { x: 6, y: 8 }
+    ];
+
+    var xScale = new Plottable.Scales.Linear();
+    var yScale = new Plottable.Scales.Linear();
+    var plot = new Plottable.XYPlot();
+    plot.x((d) => d.x, xScale);
+    plot.y((d) => d.y, yScale);
+    plot.addDataset(new Plottable.Dataset(data));
+
+    plot.renderTo(svg);
+
+    assert.deepEqual(xScale.domain(), [0.5, 6.5], "The initial domain of the scale is the expected one");
+
+    plot.x((d) => d.x, xScale);
+    assert.deepEqual(xScale.domain(), [0.5, 6.5], "Fake replace of a scale should have no effect");
+
+    var xScale2 = new Plottable.Scales.Linear();
+    plot.x((d) => d.x, xScale2);
+    assert.deepEqual(xScale2.domain(), [0.5, 6.5], "Replacing a scale for a plot should work");
+
+    svg.remove();
+  });
+
   describe("Category Scales", () => {
     it("rangeBand is updated when domain changes", () => {
       var scale = new Plottable.Scales.Category();

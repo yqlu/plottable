@@ -147,12 +147,13 @@ export class XYPlot<X, Y> extends Plot {
       return this._propertyBindings.get(XYPlot._X_KEY);
     }
     this._bindProperty(XYPlot._X_KEY, x, xScale);
+
     if (this._autoAdjustYScaleDomain) {
       this._updateYExtentsAndAutodomain();
     }
 
-    this._updateExtents();
-    this.redraw();
+    // this._updateExtents();
+    // this.redraw();
 
     this.render();
     return this;
@@ -188,8 +189,8 @@ export class XYPlot<X, Y> extends Plot {
       this._updateXExtentsAndAutodomain();
     }
 
-    this._updateExtents();
-    this.redraw();
+    // this._updateExtents();
+    // this.redraw();
 
     this.render();
     return this;
