@@ -2,7 +2,10 @@
   "name": "plottable",
   "description": "A modular charting library",
   "version": "1.2.0",
-  "main": ["plottable.js", "plottable.css"],
+  "main": [
+    "plottable.js",
+    "plottable.css"
+  ],
   "license": "MIT",
   "ignore": [
     "**/*",
@@ -29,7 +32,8 @@
   ],
   "dependencies": {
     "d3": "3.5.5",
-    "svg-typewriter": "0.3.0"
+    "svg-typewriter": "0.3.0",
+    "moment-timezone": "~0.4.0"
   },
   "homepage": "plottablejs.org",
   "repository": {
