@@ -1840,6 +1840,8 @@ declare module Plottable {
              * @returns {Axes.Time} The calling Time Axis.
              */
             tierLabelPositions(newPositions: string[]): Time;
+            timezone(): string;
+            timezone(timezone: string): Time;
             /**
              * Gets the possible TimeAxisConfigurations.
              */

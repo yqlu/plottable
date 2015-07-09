@@ -157,6 +157,8 @@ export module Axes {
     private _numTiers: number;
     private _measurer: SVGTypewriter.Measurers.Measurer;
 
+    private _timezone: string;
+
     private _mostPreciseConfigIndex: number;
 
     private _tierLabelPositions: string[] = [];
@@ -201,6 +203,17 @@ export module Axes {
         this.redraw();
         return this;
       }
+    }
+
+    public timezone(): string;
+    public timezone(timezone: string): Time;
+    public timezone(timezone?: string): any {
+      if (timezone == null) {
+        return this._timezone;
+      }
+
+      this._timezone = timezone;
+      return this;
     }
 
     /**

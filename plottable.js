@@ -3904,6 +3904,13 @@ var Plottable;
                     return this;
                 }
             };
+            Time.prototype.timezone = function (timezone) {
+                if (timezone == null) {
+                    return this._timezone;
+                }
+                this._timezone = timezone;
+                return this;
+            };
             Time.prototype.axisConfigurations = function (configurations) {
                 if (configurations == null) {
                     return this._possibleTimeAxisConfigurations;
